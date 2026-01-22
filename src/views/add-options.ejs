@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Options - Condorcet Vote</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo">Condorcet Vote</a>
+    </header>
+
+    <main>
+      <div id="loading" class="card">
+        <p>Loading poll...</p>
+      </div>
+
+      <div id="error" class="card hidden">
+        <h2>Poll Not Found</h2>
+        <p>This poll doesn't exist or has been removed.</p>
+        <a href="/" class="btn btn-primary">Create a New Poll</a>
+      </div>
+
+      <div id="not-allowed" class="card hidden">
+        <h2>Adding Options Not Allowed</h2>
+        <p>This poll does not allow adding new options.</p>
+        <a id="go-to-poll-not-allowed" href="#" class="btn btn-primary">Go to Poll</a>
+      </div>
+
+      <div id="add-options-container" class="card hidden">
+        <h2 id="poll-title"></h2>
+        <p class="hint">Add new options to this poll. Others can vote on them.</p>
+
+        <div class="form-group">
+          <label>Current Options</label>
+          <ul id="current-options" class="options-display"></ul>
+        </div>
+
+        <div class="form-group">
+          <label for="new-option-text">Add a New Option</label>
+          <div class="add-option-row">
+            <input type="text" id="new-option-text" placeholder="Enter new option">
+            <button type="button" id="add-new-option" class="btn btn-secondary">Add</button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a id="go-to-poll" href="#" class="btn btn-primary">Go to Poll to Vote</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Powered by the <a href="https://en.wikipedia.org/wiki/Schulze_method" target="_blank">Schulze method</a></p>
+    </footer>
+  </div>
+
+  <script>
+    window.POLL_ID = '<%= pollId %>';
+  </script>
+  <script src="/js/add-options.js"></script>
+</body>
+</html>

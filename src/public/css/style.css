@@ -284,6 +284,21 @@ header h1, .logo {
   color: white;
 }
 
+/* Options Display (read-only list) */
+.options-display {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.options-display li {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
 /* Results */
 .ranking-list {
   list-style: none;

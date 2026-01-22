@@ -26,6 +26,10 @@ app.get('/poll/:id', (req, res) => {
   res.render('poll', { pollId: req.params.id });
 });
 
+app.get('/poll/:id/add', (req, res) => {
+  res.render('add-options', { pollId: req.params.id });
+});
+
 // 404 handler
 app.use((_req, res) => {
   res.status(404).render('404');

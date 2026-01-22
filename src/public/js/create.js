@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const pollLinkInput = document.getElementById('poll-link');
   const copyLinkBtn = document.getElementById('copy-link');
   const goToPollLink = document.getElementById('go-to-poll');
+  const addOptionsLinkSection = document.getElementById('add-options-link-section');
+  const addOptionsLinkInput = document.getElementById('add-options-link');
+  const copyAddLinkBtn = document.getElementById('copy-add-link');
 
   let optionCount = 2;
 
@@ -75,6 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
       pollCreatedSection.classList.remove('hidden');
       pollLinkInput.value = pollUrl;
       goToPollLink.href = data.url;
+
+      // Show add-options link if allowed
+      if (allowNewOptions) {
+        const addOptionsUrl = window.location.origin + data.url + '/add';
+        addOptionsLinkSection.classList.remove('hidden');
+        addOptionsLinkInput.value = addOptionsUrl;
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -87,6 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
       copyLinkBtn.textContent = 'Copied!';
       setTimeout(() => {
         copyLinkBtn.textContent = 'Copy';
+      }, 2000);
+    });
+  });
+
+  // Copy add-options link
+  copyAddLinkBtn.addEventListener('click', () => {
+    addOptionsLinkInput.select();
+    navigator.clipboard.writeText(addOptionsLinkInput.value).then(() => {
+      copyAddLinkBtn.textContent = 'Copied!';
+      setTimeout(() => {
+        copyAddLinkBtn.textContent = 'Copy';
       }, 2000);
     });
   });
