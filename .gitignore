@@ -1,0 +1,8 @@
+node_modules/
+dist/
+config/vote.db
+config/vote.db-wal
+config/vote.db-shm
+.env
+*.log
+.claude/

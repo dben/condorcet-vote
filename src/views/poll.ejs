@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poll - Condorcet Vote</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo">Condorcet Vote</a>
+    </header>
+
+    <main>
+      <div id="loading" class="card">
+        <p>Loading poll...</p>
+      </div>
+
+      <div id="error" class="card hidden">
+        <h2>Poll Not Found</h2>
+        <p>This poll doesn't exist or has been removed.</p>
+        <a href="/" class="btn btn-primary">Create a New Poll</a>
+      </div>
+
+      <div id="vote-form-container" class="card hidden">
+        <h2 id="poll-title"></h2>
+
+        <form id="vote-form">
+          <div class="form-group">
+            <label for="voter-name">Your Name</label>
+            <input type="text" id="voter-name" name="voterName" placeholder="Enter your name" required>
+          </div>
+
+          <div class="form-group">
+            <label>Rank the options (drag to reorder, or leave unranked)</label>
+            <p class="hint">Higher position = stronger preference. Unranked items are treated as tied for last.</p>
+            <ul id="options-list" class="sortable-list"></ul>
+          </div>
+
+          <div id="add-option-section" class="form-group hidden">
+            <label>Add a New Option</label>
+            <div class="add-option-row">
+              <input type="text" id="new-option-text" placeholder="Enter new option">
+              <button type="button" id="add-new-option" class="btn btn-secondary">Add</button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Vote</button>
+            <button type="button" id="view-results-btn" class="btn btn-secondary">View Results</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="results-container" class="card hidden">
+        <h2 id="results-title"></h2>
+
+        <div id="no-votes" class="hidden">
+          <p>No votes have been cast yet. Be the first to vote!</p>
+        </div>
+
+        <div id="results-content">
+          <div class="results-section">
+            <h3>Ranking</h3>
+            <ol id="ranking-list" class="ranking-list"></ol>
+          </div>
+
+          <div class="results-section">
+            <h3>Vote Count</h3>
+            <p><span id="vote-count">0</span> votes from: <span id="voter-names"></span></p>
+          </div>
+
+          <div class="results-section">
+            <h3>Pairwise Comparisons</h3>
+            <p class="hint">Each cell shows how many voters prefer the row option over the column option.</p>
+            <div class="table-wrapper">
+              <table id="matrix-table" class="matrix-table"></table>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="edit-vote-btn" class="btn btn-secondary">Edit My Vote</button>
+          <button type="button" id="back-to-vote-btn" class="btn btn-secondary hidden">Back to Voting</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Powered by the <a href="https://en.wikipedia.org/wiki/Schulze_method" target="_blank">Schulze method</a></p>
+    </footer>
+  </div>
+
+  <script>
+    window.POLL_ID = '<%= pollId %>';
+  </script>
+  <script src="/js/poll.js"></script>
+</body>
+</html>

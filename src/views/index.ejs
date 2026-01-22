@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Poll - Condorcet Vote</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Condorcet Vote</h1>
+      <p class="subtitle">Create ranked-choice polls using the Schulze method</p>
+    </header>
+
+    <main>
+      <form id="create-poll-form" class="card">
+        <h2>Create a New Poll</h2>
+
+        <div class="form-group">
+          <label for="title">Poll Question or Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="What should we have for dinner?"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Options</label>
+          <div id="options-container">
+            <div class="option-input">
+              <input type="text" name="options[]" placeholder="Option 1" required>
+              <button type="button" class="btn-icon remove-option" title="Remove option">&times;</button>
+            </div>
+            <div class="option-input">
+              <input type="text" name="options[]" placeholder="Option 2" required>
+              <button type="button" class="btn-icon remove-option" title="Remove option">&times;</button>
+            </div>
+          </div>
+          <button type="button" id="add-option" class="btn btn-secondary">+ Add Option</button>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" id="allow-new-options" name="allowNewOptions">
+            Allow voters to add new options
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Poll</button>
+      </form>
+
+      <div id="poll-created" class="card hidden">
+        <h2>Poll Created!</h2>
+        <p>Share this link with your voters:</p>
+        <div class="link-box">
+          <input type="text" id="poll-link" readonly>
+          <button type="button" id="copy-link" class="btn btn-secondary">Copy</button>
+        </div>
+        <a id="go-to-poll" href="#" class="btn btn-primary">Go to Poll</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>Powered by the <a href="https://en.wikipedia.org/wiki/Schulze_method" target="_blank">Schulze method</a></p>
+    </footer>
+  </div>
+
+  <script src="/js/create.js"></script>
+</body>
+</html>
