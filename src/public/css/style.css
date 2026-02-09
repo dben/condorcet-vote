@@ -88,6 +88,7 @@ header h1, .logo {
 
 .form-group input[type="text"],
 .form-group input[type="email"],
+.form-group input[type="datetime-local"],
 .form-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -201,6 +202,15 @@ header h1, .logo {
 .btn-secondary:hover {
   background: var(--secondary);
   color: white;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  transform: none;
 }
 
 /* Link Box */
@@ -409,6 +419,45 @@ header h1, .logo {
   font-size: 1rem;
   border: 2px solid var(--border);
   border-radius: var(--radius);
+}
+
+/* Voting Notice */
+.voting-notice {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.voting-notice p {
+  margin-bottom: 0.5rem;
+}
+
+.voting-notice p:last-child {
+  margin-bottom: 0;
+}
+
+/* Magic Link Section */
+.magic-link-section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.magic-link-section h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Poll Description */
+.poll-description {
+  color: var(--text-muted);
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
 }
 
 /* Utility */

@@ -17,7 +17,7 @@ const router = Router();
 // Create a new poll
 router.post('/polls', (req: Request, res: Response) => {
   try {
-    const { title, options, allowNewOptions } = req.body;
+    const { title, description, options, allowNewOptions, startDate } = req.body;
 
     if (!title || !options || !Array.isArray(options) || options.length < 2) {
       res.status(400).json({ error: 'Title and at least 2 options required' });
@@ -26,9 +26,12 @@ router.post('/polls', (req: Request, res: Response) => {
 
     const pollId = nanoid(10);
     const allowNew = allowNewOptions ? 1 : 0;
+    // Store startDate as ISO string or null
+    const startDateValue = startDate ? new Date(startDate).toISOString() : null;
 
     const transaction = db.transaction(() => {
-      pollQueries.create.run(pollId, title, allowNew);
+      const descriptionValue = description?.trim() || null;
+      pollQueries.create.run(pollId, title, descriptionValue, allowNew, startDateValue);
       for (const optionText of options) {
         if (optionText.trim()) {
           optionQueries.create.run(pollId, optionText.trim());
@@ -57,10 +60,14 @@ router.get('/polls/:id', (req: Request, res: Response) => {
     const options = optionQueries.getByPollId.all(req.params.id) as Option[];
     const votes = voteQueries.getByPollId.all(req.params.id) as Vote[];
 
+    // Check if voting has started
+    const votingStarted = !poll.start_date || new Date(poll.start_date) <= new Date();
+
     res.json({
       poll,
       options,
       voteCount: votes.length,
+      votingStarted,
     });
   } catch (error) {
     console.error('Error getting poll:', error);
@@ -115,6 +122,12 @@ router.post('/polls/:id/vote', (req: Request, res: Response) => {
     const poll = pollQueries.getById.get(pollId) as Poll | undefined;
     if (!poll) {
       res.status(404).json({ error: 'Poll not found' });
+      return;
+    }
+
+    // Check if voting has started
+    if (poll.start_date && new Date(poll.start_date) > new Date()) {
+      res.status(403).json({ error: 'Voting has not started yet' });
       return;
     }
 

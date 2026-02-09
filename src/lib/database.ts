@@ -13,6 +13,12 @@ const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 
+// Helper to check if a column exists
+function columnExists(tableName: string, columnName: string): boolean {
+  const columns = db.pragma(`table_info(${tableName})`) as { name: string }[];
+  return columns.some(col => col.name === columnName);
+}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS polls (
     id TEXT PRIMARY KEY,
@@ -56,10 +62,23 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_rankings_vote ON vote_rankings(vote_id);
 `);
 
+// Migrations for existing databases
+// Add start_date column to polls (nullable for backward compatibility)
+if (!columnExists('polls', 'start_date')) {
+  db.exec('ALTER TABLE polls ADD COLUMN start_date DATETIME');
+}
+
+// Add description column to polls (nullable, optional)
+if (!columnExists('polls', 'description')) {
+  db.exec('ALTER TABLE polls ADD COLUMN description TEXT');
+}
+
 export interface Poll {
   id: string;
   title: string;
+  description: string | null;
   allow_new_options: number;
+  start_date: string | null;
   created_at: string;
 }
 
@@ -87,8 +106,8 @@ export interface VoteRanking {
 }
 
 export const pollQueries = {
-  create: db.prepare<[string, string, number]>(
-    'INSERT INTO polls (id, title, allow_new_options) VALUES (?, ?, ?)'
+  create: db.prepare<[string, string, string | null, number, string | null]>(
+    'INSERT INTO polls (id, title, description, allow_new_options, start_date) VALUES (?, ?, ?, ?, ?)'
   ),
   getById: db.prepare<[string]>('SELECT * FROM polls WHERE id = ?'),
   getAll: db.prepare('SELECT * FROM polls ORDER BY created_at DESC'),

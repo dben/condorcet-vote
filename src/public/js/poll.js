@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let existingVote = null;
   let rankedOptions = [];
   let unrankedOptions = [];
+  let votingStarted = true;
 
   // Get or create voter token
   function getVoterToken() {
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       pollData = await pollResponse.json();
+      votingStarted = pollData.votingStarted;
 
       // Check for existing vote
       const voteResponse = await fetch(`/api/polls/${POLL_ID}/vote/${voterToken}`);
@@ -80,12 +82,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showVoteForm() {
     pollTitleEl.textContent = pollData.poll.title;
+    const descEl = document.getElementById('poll-description');
+    if (pollData.poll.description) {
+      descEl.textContent = pollData.poll.description;
+      descEl.classList.remove('hidden');
+    } else {
+      descEl.classList.add('hidden');
+    }
     voteFormContainer.classList.remove('hidden');
     resultsContainer.classList.add('hidden');
 
     if (existingVote) {
       voterNameInput.value = existingVote.voterName;
       backToVoteBtn.classList.remove('hidden');
+    }
+
+    // Handle voting not started state
+    const votingNotStartedEl = document.getElementById('voting-not-started');
+    const submitBtn = voteForm.querySelector('button[type="submit"]');
+
+    if (!votingStarted && pollData.poll.start_date) {
+      votingNotStartedEl.classList.remove('hidden');
+      const startTime = new Date(pollData.poll.start_date);
+      document.getElementById('voting-start-time').textContent = startTime.toLocaleString();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Voting Not Open';
+    } else {
+      votingNotStartedEl.classList.add('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Vote';
     }
 
     // Setup options
@@ -364,11 +389,32 @@ document.addEventListener('DOMContentLoaded', () => {
         renderMatrix(data.results.matrix);
       }
 
-      // Show edit button if user has voted
+      // Show edit button and magic link if user has voted
       if (existingVote) {
         editVoteBtn.classList.remove('hidden');
+
+        // Show magic link
+        const magicLinkSection = document.getElementById('magic-link-section');
+        const magicLinkInput = document.getElementById('magic-link');
+        const copyMagicLinkBtn = document.getElementById('copy-magic-link');
+
+        magicLinkSection.classList.remove('hidden');
+        const magicUrl = `${window.location.origin}/poll/${POLL_ID}/magic/${voterToken}`;
+        magicLinkInput.value = magicUrl;
+
+        // Setup copy button
+        copyMagicLinkBtn.onclick = () => {
+          magicLinkInput.select();
+          navigator.clipboard.writeText(magicLinkInput.value).then(() => {
+            copyMagicLinkBtn.textContent = 'Copied!';
+            setTimeout(() => {
+              copyMagicLinkBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        };
       } else {
         editVoteBtn.classList.add('hidden');
+        document.getElementById('magic-link-section').classList.add('hidden');
       }
     } catch (error) {
       console.error('Error loading results:', error);

@@ -49,9 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim() || null;
     const optionInputs = optionsContainer.querySelectorAll('input[name="options[]"]');
     const options = Array.from(optionInputs).map(input => input.value.trim()).filter(v => v);
     const allowNewOptions = document.getElementById('allow-new-options').checked;
+    const startDateInput = document.getElementById('start-date').value;
+    const startDate = startDateInput || null;
 
     if (options.length < 2) {
       alert('Please provide at least 2 options');
@@ -62,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await fetch('/api/polls', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, options, allowNewOptions }),
+        body: JSON.stringify({ title, description, options, allowNewOptions, startDate }),
       });
 
       if (!response.ok) {

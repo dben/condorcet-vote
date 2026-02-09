@@ -25,6 +25,13 @@
 
       <div id="vote-form-container" class="card hidden">
         <h2 id="poll-title"></h2>
+        <p id="poll-description" class="poll-description hidden"></p>
+
+        <div id="voting-not-started" class="voting-notice hidden">
+          <p>Voting has not started yet.</p>
+          <p>Voting begins: <strong id="voting-start-time"></strong></p>
+          <p class="hint">You can view the options and add new ones (if allowed), but you cannot submit your vote until voting begins.</p>
+        </div>
 
         <form id="vote-form">
           <div class="form-group">
@@ -83,6 +90,15 @@
         <div class="form-actions">
           <button type="button" id="edit-vote-btn" class="btn btn-secondary">Edit My Vote</button>
           <button type="button" id="back-to-vote-btn" class="btn btn-secondary hidden">Back to Voting</button>
+        </div>
+
+        <div id="magic-link-section" class="magic-link-section hidden">
+          <h4>Update Your Vote from Another Device</h4>
+          <p class="hint">Use this link on another device or browser to access and update your vote:</p>
+          <div class="link-box">
+            <input type="text" id="magic-link" readonly>
+            <button type="button" id="copy-magic-link" class="btn btn-secondary">Copy</button>
+          </div>
         </div>
       </div>
     </main>

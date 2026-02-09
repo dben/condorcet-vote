@@ -29,6 +29,16 @@
         </div>
 
         <div class="form-group">
+          <label for="description">Description (optional)</label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Add more context or details about this poll"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
           <label>Options</label>
           <div id="options-container">
             <div class="option-input">
@@ -48,6 +58,16 @@
             <input type="checkbox" id="allow-new-options" name="allowNewOptions">
             Allow voters to add new options
           </label>
+        </div>
+
+        <div class="form-group">
+          <label for="start-date">Start Date (optional)</label>
+          <input
+            type="datetime-local"
+            id="start-date"
+            name="startDate"
+          >
+          <p class="hint">If set, voters can add options before this date but cannot vote until it arrives.</p>
         </div>
 
         <button type="submit" class="btn btn-primary">Create Poll</button>

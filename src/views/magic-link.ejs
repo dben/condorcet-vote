@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restoring Vote - Condorcet Vote</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo">Condorcet Vote</a>
+    </header>
+
+    <main>
+      <div class="card text-center">
+        <h2>Restoring Your Vote...</h2>
+        <p>Please wait while we restore your voting session.</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function() {
+      const pollId = '<%= pollId %>';
+      const voterToken = '<%= voterToken %>';
+      const STORAGE_KEY = `vote_${pollId}`;
+
+      // Store the token in localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ token: voterToken }));
+
+      // Redirect to the poll page
+      window.location.href = `/poll/${pollId}`;
+    })();
+  </script>
+</body>
+</html>

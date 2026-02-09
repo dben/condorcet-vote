@@ -30,6 +30,11 @@ app.get('/poll/:id/add', (req, res) => {
   res.render('add-options', { pollId: req.params.id });
 });
 
+// Magic link route - stores voter token and redirects to poll
+app.get('/poll/:id/magic/:token', (req, res) => {
+  res.render('magic-link', { pollId: req.params.id, voterToken: req.params.token });
+});
+
 // 404 handler
 app.use((_req, res) => {
   res.status(404).render('404');
