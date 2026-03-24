@@ -207,6 +207,38 @@ router.post('/polls/:id/options', (req: Request, res: Response) => {
   }
 });
 
+// Delete a poll option
+router.delete('/polls/:id/options/:optionId', (req: Request, res: Response) => {
+  try {
+    const pollId = req.params.id;
+    const optionId = parseInt(req.params.optionId, 10);
+
+    if (isNaN(optionId)) {
+      res.status(400).json({ error: 'Invalid option id' });
+      return;
+    }
+
+    const poll = pollQueries.getById.get(pollId) as Poll | undefined;
+    if (!poll) {
+      res.status(404).json({ error: 'Poll not found' });
+      return;
+    }
+
+    const option = optionQueries.getById.get(optionId) as Option | undefined;
+    if (!option || option.poll_id !== pollId) {
+      res.status(404).json({ error: 'Option not found' });
+      return;
+    }
+
+    optionQueries.deleteById.run(optionId, pollId);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting option:', error);
+    res.status(500).json({ error: 'Failed to delete option' });
+  }
+});
+
 // Get poll results
 router.get('/polls/:id/results', (req: Request, res: Response) => {
   try {
