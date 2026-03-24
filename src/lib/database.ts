@@ -121,6 +121,9 @@ export const optionQueries = {
     'SELECT * FROM options WHERE poll_id = ? ORDER BY id'
   ),
   getById: db.prepare<[number]>('SELECT * FROM options WHERE id = ?'),
+  deleteById: db.prepare<[number, string]>(
+    'DELETE FROM options WHERE id = ? AND poll_id = ?'
+  ),
 };
 
 export const voteQueries = {
