@@ -400,6 +400,21 @@ header h1, .logo {
   color: var(--text);
 }
 
+/* Pairwise Full-Width Section */
+.pairwise-section {
+  background: var(--card-bg);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.pairwise-section h3 {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
 /* Form Actions */
 .form-actions {
   display: flex;

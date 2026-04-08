@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     voteFormContainer.classList.remove('hidden');
     resultsContainer.classList.add('hidden');
+    document.getElementById('pairwise-container').classList.add('hidden');
 
     if (existingVote) {
       voterNameInput.value = existingVote.voterName;
@@ -143,9 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
       rankedIds.sort((a, b) => a.rank - b.rank);
       rankedOptions = rankedIds.map(r => pollData.options.find(o => o.id === r.id));
       unrankedOptions = unrankedIds.map(id => pollData.options.find(o => o.id === id));
+      shuffleArray(unrankedOptions);
     } else {
       // All options unranked initially
       unrankedOptions = [...pollData.options];
+      shuffleArray(unrankedOptions);
     }
 
     renderOptions();
@@ -369,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.voteCount === 0) {
         document.getElementById('no-votes').classList.remove('hidden');
         document.getElementById('results-content').classList.add('hidden');
+        document.getElementById('pairwise-container').classList.add('hidden');
       } else {
         document.getElementById('no-votes').classList.add('hidden');
         document.getElementById('results-content').classList.remove('hidden');
@@ -385,8 +389,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render voters
         document.getElementById('voter-names').textContent = data.voters.join(', ');
 
-        // Render matrix
-        renderMatrix(data.results.matrix);
+        // Render matrix sorted to match ranking order
+        const rankedNames = data.results.rankedOptions.map(o => o.name);
+        const matrixByName = new Map(data.results.matrix.map(r => [r.row, r]));
+        const sortedMatrix = rankedNames.map(name => {
+          const row = matrixByName.get(name);
+          const cellsByOpponent = new Map(row.cells.map(c => [c.opponent, c]));
+          return {
+            row: row.row,
+            cells: rankedNames.map(colName => cellsByOpponent.get(colName)),
+          };
+        });
+        renderMatrix(sortedMatrix);
+        document.getElementById('pairwise-container').classList.remove('hidden');
       }
 
       // Show edit button and magic link if user has voted
@@ -464,6 +479,14 @@ document.addEventListener('DOMContentLoaded', () => {
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
+  }
+
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   }
 
   function escapeHtml(text) {
