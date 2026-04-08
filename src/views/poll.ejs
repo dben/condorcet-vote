@@ -78,13 +78,6 @@
             <p><span id="vote-count">0</span> votes from: <span id="voter-names"></span></p>
           </div>
 
-          <div class="results-section">
-            <h3>Pairwise Comparisons</h3>
-            <p class="hint">Each cell shows how many voters prefer the row option over the column option.</p>
-            <div class="table-wrapper">
-              <table id="matrix-table" class="matrix-table"></table>
-            </div>
-          </div>
         </div>
 
         <div class="form-actions">
@@ -102,7 +95,17 @@
         </div>
       </div>
     </main>
+  </div>
 
+  <div id="pairwise-container" class="pairwise-section hidden">
+    <h3>Pairwise Comparisons</h3>
+    <p class="hint">Each cell shows how many voters prefer the row option over the column option.</p>
+    <div class="table-wrapper">
+      <table id="matrix-table" class="matrix-table"></table>
+    </div>
+  </div>
+
+  <div class="container">
     <footer>
       <p>Powered by the <a href="https://en.wikipedia.org/wiki/Schulze_method" target="_blank">Schulze method</a></p>
     </footer>
