@@ -412,8 +412,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const magicLinkSection = document.getElementById('magic-link-section');
         const magicLinkInput = document.getElementById('magic-link');
         const copyMagicLinkBtn = document.getElementById('copy-magic-link');
+        const pairwiseSection = document.getElementById('pairwise-container');
 
         magicLinkSection.classList.remove('hidden');
+        pairwiseSection.classList.remove('hidden');
         const magicUrl = `${window.location.origin}/poll/${POLL_ID}/magic/${voterToken}`;
         magicLinkInput.value = magicUrl;
 
